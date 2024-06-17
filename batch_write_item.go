@@ -1,16 +1,16 @@
 package dynamock
 
 import (
+	"context"
 	"fmt"
 	"reflect"
 
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/request"
-	"github.com/aws/aws-sdk-go/service/dynamodb"
+	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
+	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
 )
 
 // WithRequest - method for set Request expectation
-func (e *BatchWriteItemExpectation) WithRequest(input map[string][]*dynamodb.WriteRequest) *BatchWriteItemExpectation {
+func (e *BatchWriteItemExpectation) WithRequest(input map[string][]*types.WriteRequest) *BatchWriteItemExpectation {
 	e.input = input
 	return e
 }
@@ -22,11 +22,11 @@ func (e *BatchWriteItemExpectation) WillReturns(res dynamodb.BatchWriteItemOutpu
 }
 
 // BatchWriteItem - this func will be invoked when test running matching expectation with actual input
-func (e *MockDynamoDB) BatchWriteItem(input *dynamodb.BatchWriteItemInput) (*dynamodb.BatchWriteItemOutput, error) {
+func (e *MockDynamoDB) BatchWriteItem(ctx context.Context, params *dynamodb.BatchWriteItemInput, optFns ...func(*dynamodb.Options)) (*dynamodb.BatchWriteItemOutput, error) {
 	if len(e.dynaMock.BatchWriteItemExpect) > 0 {
 		for i, x := range e.dynaMock.BatchWriteItemExpect {
 			if x.input != nil {
-				if reflect.DeepEqual(x.input, input.RequestItems) {
+				if reflect.DeepEqual(x.input, params.RequestItems) {
 					e.dynaMock.BatchWriteItemExpect = append(e.dynaMock.BatchWriteItemExpect[:i], e.dynaMock.BatchWriteItemExpect[i:]...)
 					return x.output, nil
 				}
@@ -34,25 +34,5 @@ func (e *MockDynamoDB) BatchWriteItem(input *dynamodb.BatchWriteItemInput) (*dyn
 		}
 	}
 
-	return &dynamodb.BatchWriteItemOutput{}, fmt.Errorf("Batch Write Item Expectation Failed. Expected one of %+v to equal %+v", e.dynaMock.BatchWriteItemExpect, input.RequestItems)
-}
-
-// BatchWriteItemWithContext - this func will be invoked when test running matching expectation with actual input
-func (e *MockDynamoDB) BatchWriteItemWithContext(ctx aws.Context, input *dynamodb.BatchWriteItemInput, opt ...request.Option) (*dynamodb.BatchWriteItemOutput, error) {
-	if len(e.dynaMock.BatchWriteItemExpect) > 0 {
-		x := e.dynaMock.BatchWriteItemExpect[0] //get first element of expectation
-
-		if x.input != nil {
-			if !reflect.DeepEqual(x.input, input.RequestItems) {
-				return &dynamodb.BatchWriteItemOutput{}, fmt.Errorf("Expect input %+v but found input %+v", x.input, input.RequestItems)
-			}
-		}
-
-		// delete first element of expectation
-		e.dynaMock.BatchWriteItemExpect = append(e.dynaMock.BatchWriteItemExpect[:0], e.dynaMock.BatchWriteItemExpect[1:]...)
-
-		return x.output, nil
-	}
-
-	return &dynamodb.BatchWriteItemOutput{}, fmt.Errorf("Batch Write Item Expectation Not Found")
+	return &dynamodb.BatchWriteItemOutput{}, fmt.Errorf("Batch Write Item Expectation Failed. Expected one of %+v to equal %+v", e.dynaMock.BatchWriteItemExpect, params.RequestItems)
 }

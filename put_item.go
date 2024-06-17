@@ -1,12 +1,12 @@
 package dynamock
 
 import (
+	"context"
 	"fmt"
 	"reflect"
 
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/request"
-	"github.com/aws/aws-sdk-go/service/dynamodb"
+	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
+	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
 )
 
 // ToTable - method for set Table expectation
@@ -16,7 +16,7 @@ func (e *PutItemExpectation) ToTable(table string) *PutItemExpectation {
 }
 
 // WithItems - method for set Items expectation
-func (e *PutItemExpectation) WithItems(item map[string]*dynamodb.AttributeValue) *PutItemExpectation {
+func (e *PutItemExpectation) WithItems(item map[string]types.AttributeValue) *PutItemExpectation {
 	e.item = item
 	return e
 }
@@ -28,19 +28,19 @@ func (e *PutItemExpectation) WillReturns(res dynamodb.PutItemOutput) *PutItemExp
 }
 
 // PutItem - this func will be invoked when test running matching expectation with actual input
-func (e *MockDynamoDB) PutItem(input *dynamodb.PutItemInput) (*dynamodb.PutItemOutput, error) {
+func (e *MockDynamoDB) PutItem(ctx context.Context, params *dynamodb.PutItemInput, optFns ...func(*dynamodb.Options)) (*dynamodb.PutItemOutput, error) {
 	if len(e.dynaMock.PutItemExpect) > 0 {
 		x := e.dynaMock.PutItemExpect[0] //get first element of expectation
 
 		if x.table != nil {
-			if *x.table != *input.TableName {
-				return &dynamodb.PutItemOutput{}, fmt.Errorf("Expect table %s but found table %s", *x.table, *input.TableName)
+			if *x.table != *params.TableName {
+				return &dynamodb.PutItemOutput{}, fmt.Errorf("Expect table %s but found table %s", *x.table, *params.TableName)
 			}
 		}
 
 		if x.item != nil {
-			if !reflect.DeepEqual(x.item, input.Item) {
-				return &dynamodb.PutItemOutput{}, fmt.Errorf("Expect item %+v but found item %+v", x.item, input.Item)
+			if !reflect.DeepEqual(x.item, params.Item) {
+				return &dynamodb.PutItemOutput{}, fmt.Errorf("Expect item %+v but found item %+v", x.item, params.Item)
 			}
 		}
 
@@ -51,30 +51,4 @@ func (e *MockDynamoDB) PutItem(input *dynamodb.PutItemInput) (*dynamodb.PutItemO
 	}
 
 	return &dynamodb.PutItemOutput{}, fmt.Errorf("Put Item Expectation Not Found")
-}
-
-// PutItemWithContext - this func will be invoked when test running matching expectation with actual input
-func (e *MockDynamoDB) PutItemWithContext(ctx aws.Context, input *dynamodb.PutItemInput, opt ...request.Option) (*dynamodb.PutItemOutput, error) {
-	if len(e.dynaMock.PutItemExpect) > 0 {
-		x := e.dynaMock.PutItemExpect[0] //get first element of expectation
-
-		if x.table != nil {
-			if *x.table != *input.TableName {
-				return &dynamodb.PutItemOutput{}, fmt.Errorf("Expect table %s but found table %s", *x.table, *input.TableName)
-			}
-		}
-
-		if x.item != nil {
-			if !reflect.DeepEqual(x.item, input.Item) {
-				return &dynamodb.PutItemOutput{}, fmt.Errorf("Expect item %+v but found item %+v", x.item, input.Item)
-			}
-		}
-
-		// delete first element of expectation
-		e.dynaMock.PutItemExpect = append(e.dynaMock.PutItemExpect[:0], e.dynaMock.PutItemExpect[1:]...)
-
-		return x.output, nil
-	}
-
-	return &dynamodb.PutItemOutput{}, fmt.Errorf("Put Item With Context Expectation Not Found")
 }

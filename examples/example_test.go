@@ -1,11 +1,12 @@
 package examples
 
 import (
-	dynamock "github.com/gusaul/go-dynamock"
 	"testing"
 
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/dynamodb"
+	dynamock "github.com/sardp/go-dynamock/v2"
+
+	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
+	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
 )
 
 var mock *dynamock.DynaMock
@@ -16,17 +17,17 @@ func init() {
 }
 
 func TestGetName(t *testing.T) {
-	expectKey := map[string]*dynamodb.AttributeValue{
-		"id": {
-			N: aws.String("1"),
+	expectKey := map[string]types.AttributeValue{
+		"id": &types.AttributeValueMemberS{
+			Value: "1",
 		},
 	}
 
-	expectedResult := aws.String("jaka")
+	expectedResult := "jaka"
 	result := dynamodb.GetItemOutput{
-		Item: map[string]*dynamodb.AttributeValue{
-			"name": {
-				S: expectedResult,
+		Item: map[string]types.AttributeValue{
+			"name": &types.AttributeValueMemberS{
+				Value: expectedResult,
 			},
 		},
 	}
@@ -35,7 +36,7 @@ func TestGetName(t *testing.T) {
 	mock.ExpectGetItem().ToTable("employee").WithKeys(expectKey).WillReturns(result)
 
 	actualResult, _ := GetName("1")
-	if actualResult != expectedResult {
+	if *actualResult != expectedResult {
 		t.Errorf("Test Fail")
 	}
 }

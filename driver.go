@@ -1,14 +1,46 @@
 package dynamock
 
 import (
-	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface"
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
+	"github.com/guregu/dynamo/v2/dynamodbiface"
 )
 
 var mock *MockDynamoDB
 
+func ListTables(ctx context.Context, params *dynamodb.ListTablesInput, optFns ...func(*dynamodb.Options)) (*dynamodb.ListTablesOutput, error) {
+	panic("TODO")
+}
+func ListGlobalTables(ctx context.Context, params *dynamodb.ListGlobalTablesInput, optFns ...func(*dynamodb.Options)) (*dynamodb.ListGlobalTablesOutput, error) {
+	panic("TODO")
+}
+func UpdateTable(ctx context.Context, params *dynamodb.UpdateTableInput, optFns ...func(*dynamodb.Options)) (*dynamodb.UpdateTableOutput, error) {
+	panic("TODO")
+}
+
+func TransactGetItems(ctx context.Context, params *dynamodb.TransactGetItemsInput, optFns ...func(*dynamodb.Options)) (*dynamodb.TransactGetItemsOutput, error) {
+	panic("TODO")
+}
+
+func UpdateTimeToLive(ctx context.Context, params *dynamodb.UpdateTimeToLiveInput, optFns ...func(*dynamodb.Options)) (*dynamodb.UpdateTimeToLiveOutput, error) {
+	panic("TODO")
+}
+func DescribeTimeToLive(ctx context.Context, params *dynamodb.DescribeTimeToLiveInput, optFns ...func(*dynamodb.Options)) (*dynamodb.DescribeTimeToLiveOutput, error) {
+	panic("TODO")
+}
+
+func DeleteTable(ctx context.Context, params *dynamodb.DeleteTableInput, optFns ...func(*dynamodb.Options)) (*dynamodb.DeleteTableOutput, error) {
+	panic("TODO")
+}
+func TransactWriteItems(ctx context.Context, params *dynamodb.TransactWriteItemsInput, optFns ...func(*dynamodb.Options)) (*dynamodb.TransactWriteItemsOutput, error) {
+	panic("TODO")
+}
+
 // New - constructor for mock instantiation
 // Return : 1st => DynamoDBAPI implementation, used to inject app object
-// 			2nd => mock object, used to set expectation and desired result
+//
+//	2nd => mock object, used to set expectation and desired result
 func New() (dynamodbiface.DynamoDBAPI, *DynaMock) {
 	mock = new(MockDynamoDB)
 	mock.dynaMock = new(DynaMock)
