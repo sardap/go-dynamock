@@ -46,13 +46,13 @@ func (e *MockDynamoDB) UpdateItem(ctx context.Context, params *dynamodb.UpdateIt
 
 		if x.key != nil {
 			if !reflect.DeepEqual(x.key, params.Key) {
-				return &dynamodb.UpdateItemOutput{}, fmt.Errorf("Expect key %+v but found key %+v", x.key, params.Key)
+				return &dynamodb.UpdateItemOutput{}, fmt.Errorf("Expect key %s but found key %s", x.key, params.Key)
 			}
 		}
 
 		if x.attributeUpdates != nil {
 			if !reflect.DeepEqual(x.attributeUpdates, params.AttributeUpdates) {
-				return &dynamodb.UpdateItemOutput{}, fmt.Errorf("Expect key %+v but found key %+v", x.attributeUpdates, params.AttributeUpdates)
+				return &dynamodb.UpdateItemOutput{}, fmt.Errorf("Expect key %s but found key %s", x.attributeUpdates, params.AttributeUpdates)
 			}
 		}
 

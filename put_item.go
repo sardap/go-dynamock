@@ -40,7 +40,7 @@ func (e *MockDynamoDB) PutItem(ctx context.Context, params *dynamodb.PutItemInpu
 
 		if x.item != nil {
 			if !reflect.DeepEqual(x.item, params.Item) {
-				return &dynamodb.PutItemOutput{}, fmt.Errorf("Expect item %+v but found item %+v", x.item, params.Item)
+				return &dynamodb.PutItemOutput{}, fmt.Errorf("Expect item %s but found item %s", x.item, params.Item)
 			}
 		}
 

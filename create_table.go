@@ -40,7 +40,7 @@ func (e *MockDynamoDB) CreateTable(ctx context.Context, parmas *dynamodb.CreateT
 
 		if x.keySchema != nil {
 			if !reflect.DeepEqual(x.keySchema, parmas.KeySchema) {
-				return &dynamodb.CreateTableOutput{}, fmt.Errorf("Expect keySchema %+v but found keySchema %+v", x.keySchema, parmas.KeySchema)
+				return &dynamodb.CreateTableOutput{}, fmt.Errorf("Expect keySchema %s but found keySchema %s", x.keySchema, parmas.KeySchema)
 			}
 		}
 

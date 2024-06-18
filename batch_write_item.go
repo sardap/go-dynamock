@@ -34,5 +34,5 @@ func (e *MockDynamoDB) BatchWriteItem(ctx context.Context, params *dynamodb.Batc
 		}
 	}
 
-	return &dynamodb.BatchWriteItemOutput{}, fmt.Errorf("Batch Write Item Expectation Failed. Expected one of %+v to equal %+v", e.dynaMock.BatchWriteItemExpect, params.RequestItems)
+	return &dynamodb.BatchWriteItemOutput{}, fmt.Errorf("Batch Write Item Expectation Failed. Expected one of %s to equal %s", e.dynaMock.BatchWriteItemExpect, params.RequestItems)
 }

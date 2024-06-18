@@ -40,7 +40,7 @@ func (e *MockDynamoDB) DeleteItem(ctx context.Context, input *dynamodb.DeleteIte
 
 		if x.key != nil {
 			if !reflect.DeepEqual(x.key, input.Key) {
-				return &dynamodb.DeleteItemOutput{}, fmt.Errorf("Expect key %+v but found key %+v", x.key, input.Key)
+				return &dynamodb.DeleteItemOutput{}, fmt.Errorf("Expect key %s but found key %s", x.key, input.Key)
 			}
 		}
 

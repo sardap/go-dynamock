@@ -40,7 +40,7 @@ func (e *MockDynamoDB) GetItem(ctx context.Context, params *dynamodb.GetItemInpu
 
 		if x.key != nil {
 			if !reflect.DeepEqual(x.key, params.Key) {
-				return &dynamodb.GetItemOutput{}, fmt.Errorf("Expect key %+v but found key %+v", x.key, params.Key)
+				return &dynamodb.GetItemOutput{}, fmt.Errorf("Expect key %s but found key %s", x.key, params.Key)
 			}
 		}
 

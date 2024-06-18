@@ -34,7 +34,7 @@ func (e *MockDynamoDB) TransactWriteItems(ctx context.Context, params *dynamodb.
 
 		// compare lengths
 		if len(x.items) != len(params.TransactItems) {
-			return &dynamodb.TransactWriteItemsOutput{}, fmt.Errorf("Expect items %+v but found items %+v", x.items, params.TransactItems)
+			return &dynamodb.TransactWriteItemsOutput{}, fmt.Errorf("Expect items %s but found items %s", x.items, params.TransactItems)
 		}
 
 		for i, item := range params.TransactItems {
@@ -49,7 +49,7 @@ func (e *MockDynamoDB) TransactWriteItems(ctx context.Context, params *dynamodb.
 
 			// compare transact write item - each item also contains the table name
 			if x.items[i] != nil && !reflect.DeepEqual(x.items[i], item) {
-				return &dynamodb.TransactWriteItemsOutput{}, fmt.Errorf("Expect item %+v at index %d but found item %+v", x.items[i], i, item)
+				return &dynamodb.TransactWriteItemsOutput{}, fmt.Errorf("Expect item %s at index %d but found item %s", x.items[i], i, item)
 			}
 		}
 

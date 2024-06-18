@@ -28,7 +28,7 @@ func (e *MockDynamoDB) BatchGetItem(ctx context.Context, input *dynamodb.BatchGe
 
 		if x.input != nil {
 			if !reflect.DeepEqual(x.input, input.RequestItems) {
-				return &dynamodb.BatchGetItemOutput{}, fmt.Errorf("Expect input %+v but found input %+v", x.input, input.RequestItems)
+				return &dynamodb.BatchGetItemOutput{}, fmt.Errorf("Expect input %s but found input %s", x.input, input.RequestItems)
 			}
 		}
 
