@@ -7,6 +7,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
+	"github.com/guregu/dynamo/v2"
 )
 
 // ToTable - method for set Table expectation
@@ -50,5 +51,5 @@ func (e *MockDynamoDB) DeleteItem(ctx context.Context, input *dynamodb.DeleteIte
 		return x.output, nil
 	}
 
-	return &dynamodb.DeleteItemOutput{}, fmt.Errorf("Delete Item Expectation Not Found")
+	return &dynamodb.DeleteItemOutput{}, dynamo.ErrNotFound
 }

@@ -7,6 +7,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
+	"github.com/guregu/dynamo/v2"
 )
 
 // Name - method for set Name expectation
@@ -50,5 +51,5 @@ func (e *MockDynamoDB) CreateTable(ctx context.Context, parmas *dynamodb.CreateT
 		return x.output, nil
 	}
 
-	return &dynamodb.CreateTableOutput{}, fmt.Errorf("Create Table Expectation Not Found")
+	return &dynamodb.CreateTableOutput{}, dynamo.ErrNotFound
 }
