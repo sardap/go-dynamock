@@ -66,7 +66,7 @@ type (
 
 	// BatchWriteItemExpectation struct hold expectation field, err, and result
 	BatchWriteItemExpectation struct {
-		input  map[string][]*types.WriteRequest
+		input  map[string][]types.WriteRequest
 		output *dynamodb.BatchWriteItemOutput
 	}
 
