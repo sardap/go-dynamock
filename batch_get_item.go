@@ -7,7 +7,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
-	"github.com/guregu/dynamo/v2"
 )
 
 // WithRequest - method for set Request expectation
@@ -39,5 +38,5 @@ func (e *MockDynamoDB) BatchGetItem(ctx context.Context, input *dynamodb.BatchGe
 		return x.output, nil
 	}
 
-	return &dynamodb.BatchGetItemOutput{}, dynamo.ErrNotFound
+	return &dynamodb.BatchGetItemOutput{}, fmt.Errorf("Batch Get Item Expectation Not Found")
 }

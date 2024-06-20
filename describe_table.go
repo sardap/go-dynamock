@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
-	"github.com/guregu/dynamo/v2"
 )
 
 // Table - method for set Table expectation
@@ -37,5 +36,5 @@ func (e *MockDynamoDB) DescribeTable(ctx context.Context, params *dynamodb.Descr
 		return x.output, nil
 	}
 
-	return &dynamodb.DescribeTableOutput{}, dynamo.ErrNotFound
+	return &dynamodb.DescribeTableOutput{}, fmt.Errorf("Describe Table Expectation Not Found")
 }

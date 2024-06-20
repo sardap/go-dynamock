@@ -7,7 +7,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
-	"github.com/guregu/dynamo/v2"
 )
 
 // Table - method for set Table expectation
@@ -61,5 +60,5 @@ func (e *MockDynamoDB) TransactWriteItems(ctx context.Context, params *dynamodb.
 		return x.output, nil
 	}
 
-	return &dynamodb.TransactWriteItemsOutput{}, dynamo.ErrNotFound
+	return &dynamodb.TransactWriteItemsOutput{}, fmt.Errorf("Transact Write Items Table Expectation Not Found")
 }

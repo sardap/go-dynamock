@@ -7,7 +7,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
-	"github.com/guregu/dynamo/v2"
 )
 
 // ToTable - method for set Table expectation
@@ -51,5 +50,5 @@ func (e *MockDynamoDB) GetItem(ctx context.Context, params *dynamodb.GetItemInpu
 		return x.output, nil
 	}
 
-	return &dynamodb.GetItemOutput{}, dynamo.ErrNotFound
+	return &dynamodb.GetItemOutput{}, fmt.Errorf("Get Item Expectation Not Found")
 }
