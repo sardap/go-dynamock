@@ -10,7 +10,7 @@ import (
 )
 
 // WithRequest - method for set Request expectation
-func (e *BatchWriteItemExpectation) WithRequest(input map[string][]*types.WriteRequest) *BatchWriteItemExpectation {
+func (e *BatchWriteItemExpectation) WithRequest(input map[string][]types.WriteRequest) *BatchWriteItemExpectation {
 	e.input = input
 	return e
 }

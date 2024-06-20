@@ -3,7 +3,7 @@ package examples
 import (
 	"testing"
 
-	dynamock "github.com/sardp/go-dynamock/v2"
+	dynamock "github.com/sardap/go-dynamock/v2"
 
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
